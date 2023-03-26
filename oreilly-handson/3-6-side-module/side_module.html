@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    HTML page I created for my WebAssembly module.
+
+    <script>
+      const importObject = {
+        env: {
+          __memory_base: 0,
+        },
+      };
+      if (typeof WebAssembly.instantiateStreaming === "function") {
+        WebAssembly.instantiateStreaming(fetch("side_module.wasm"), importObject).then((result) => {
+          const value1 = result.instance.exports.Increment(21);
+          const value2 = result.instance.exports.Decrement(3);
+          console.log(value1.toString(), value2.toString());
+        });
+      } else {
+        console.log("The WebAssembly.instantiateStreaming function is not available. You need to use WebAssembly.instantiate instead.");
+      }
+    </script>
+  </body>
+</html>
